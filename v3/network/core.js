@@ -74,38 +74,9 @@ const network = {
     return d => {
       // block same-origin streams for blocked hosts
       if (d.host) {
-        for (const o of hosts) {
-          if (d.host.includes(o.value) && d.host.split(o.value)[0].split('/').length === 3) {
-            if (d.stream.includes(o.value)) {
-              return {
-                value: true,
-                reason: `Downloading from "${o.value}" host is blocked`
-              };
-            }
-          }
-        }
       }
       // block streams on defined hosts
       if (d.stream) {
-        for (const o of streams) {
-          if (d.stream.includes(o.value)) {
-            const hosts = o.hosts || [];
-            if (hosts.includes('*')) {
-              return {
-                value: true,
-                reason: `Downloading "${o.value}" streams are blocked on all hosts`
-              };
-            }
-            for (const host of hosts) {
-              if (d.host.includes(host) && d.host.split(host)[0].split('/').length === 3) {
-                return {
-                  value: true,
-                  reason: `Downloading "${o.value}" streams are blocked on "${host}"`
-                };
-              }
-            }
-          }
-        }
       }
       return {
         value: false
